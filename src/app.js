@@ -1,40 +1,28 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
 import 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
+import {ThemeProvider} from 'styled-components';
 
-function HomeScreen({navigation}) {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => navigation.navigate('Details')}
-      />
-    </View>
-  );
-}
-
-function DetailsScreen({navigation}) {
-  return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Details Screen</Text>
-      <Button title="Go to Home" onPress={() => navigation.navigate('Home')} />
-    </View>
-  );
-}
+import theme from './utils/theme';
+// import KelimelerView from './views/kelimeler';
+// import ListeView from './views/liste';
+import LoginView from './views/login';
+// import RegisterView from './views/register';
 
 const Stack = createStackNavigator();
-
 function App() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ThemeProvider theme={theme}>
+      <NavigationContainer>
+        <Stack.Navigator headerMode="false">
+          <Stack.Screen name="Login" component={LoginView} />
+          {/* <Stack.Screen name="Register" component={RegisterView} />
+          <Stack.Screen name="Kelimeler" component={KelimelerView} />
+          <Stack.Screen name="Liste" component={ListeView} /> */}
+        </Stack.Navigator>
+      </NavigationContainer>
+    </ThemeProvider>
   );
 }
 
