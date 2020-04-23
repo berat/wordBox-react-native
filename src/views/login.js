@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, AsyncStorage} from 'react-native';
 
 import Box from '../components/style/Box';
 import Text from '../components/style/Text';
@@ -14,6 +14,8 @@ import {
   HesapKontrolText,
 } from '../components/hesapKontrol';
 
+export const isLogin = () => AsyncStorage.setItem('isLogin', 'true');
+
 function LoginView({navigation}) {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
@@ -25,6 +27,7 @@ function LoginView({navigation}) {
       .then(
         (data) => {
           navigation.navigate('Kelimeler');
+          isLogin();
         },
         (error) => {
           console.log('signError error: ', error);
