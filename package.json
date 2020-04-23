@@ -14,6 +14,7 @@
     "@react-native-community/masked-view": "^0.1.9",
     "@react-navigation/native": "^5.1.6",
     "@react-navigation/stack": "^5.2.13",
+    "firebase": "^7.14.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
