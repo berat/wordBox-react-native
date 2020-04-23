@@ -6,6 +6,8 @@ import Text from '../components/style/Text';
 import Input from '../components/style/Input';
 import Button from '../components/style/Button';
 
+import firebase from 'firebase';
+import {veritabani} from '../utils/api';
 import {
   HesapKontrol,
   HesapKontrolButton,
@@ -13,6 +15,23 @@ import {
 } from '../components/hesapKontrol';
 
 function LoginView({navigation}) {
+  const [email, setEmail] = React.useState();
+  const [password, setPassword] = React.useState();
+
+  const signIn = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(
+        (data) => {
+          navigation.navigate('Kelimeler');
+        },
+        (error) => {
+          console.log('signError error: ', error);
+        },
+      );
+  };
+
   return (
     <Box as={SafeAreaView} bg="#FFFFD2" flex={1}>
       <Box flex={1} alignItems="center" justifyContent="center">
@@ -42,6 +61,7 @@ function LoginView({navigation}) {
               shadowRadius: 4.27,
               elevation: 2,
             }}
+            onChangeText={(text) => setEmail(text)}
           />
           <Input
             bg="white"
@@ -66,13 +86,15 @@ function LoginView({navigation}) {
               elevation: 2,
             }}
             secureTextEntry={true}
+            onChangeText={(text) => setPassword(text)}
           />
           <Button
             mt={20}
             minWidth="85%"
             height={60}
             bg="#222831"
-            borderRadius="normal">
+            borderRadius="normal"
+            onPress={() => signIn()}>
             <Text color="#F1F1F1" fontWeight="bold" fontSize={15}>
               GİRİŞ YAP
             </Text>

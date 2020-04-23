@@ -7,6 +7,7 @@ import Input from '../components/style/Input';
 import Button from '../components/style/Button';
 
 import firebase from 'firebase';
+import {veritabani} from '../utils/api';
 import {
   HesapKontrol,
   HesapKontrolButton,
@@ -14,7 +15,7 @@ import {
 } from '../components/hesapKontrol';
 
 function RegisterView({navigation}) {
-  const [username, setUsername] = React.useState();
+  const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
   const [cpassword, setCPassword] = React.useState();
 
@@ -22,7 +23,7 @@ function RegisterView({navigation}) {
     cpassword === password
       ? firebase
           .auth()
-          .createUserWithEmailAndPassword(username, password)
+          .createUserWithEmailAndPassword(email, password)
           .then(
             (user) => {
               navigation.navigate('Login');
@@ -61,7 +62,7 @@ function RegisterView({navigation}) {
               shadowRadius: 4.27,
               elevation: 2,
             }}
-            onChangeText={(text) => setUsername(text)}
+            onChangeText={(text) => setEmail(text)}
           />
           <Input
             bg="white"
