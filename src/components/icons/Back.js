@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, {Path} from 'react-native-svg';
 
-function SvgDetail(props) {
+function SvgBack(props) {
   return (
     <Svg
       width="24"
@@ -11,8 +11,8 @@ function SvgDetail(props) {
       className=""
       {...props}>
       <Path
-        d="M6 9l6 6 6-6"
-        stroke="#222831"
+        d="M19 12H5M12 19l-7-7 7-7"
+        stroke="#000"
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -21,4 +21,4 @@ function SvgDetail(props) {
   );
 }
 
-export default SvgDetail;
+export default SvgBack;

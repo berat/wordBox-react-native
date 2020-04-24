@@ -8,6 +8,7 @@ import {isLogin} from './views/login';
 
 import theme from './utils/theme';
 import KelimelerView from './views/kelimeler';
+import EkleView from './views/ekle';
 // import ListeView from './views/liste';
 import LoginView from './views/login';
 import RegisterView from './views/register';
@@ -19,6 +20,7 @@ function App() {
       <NavigationContainer>
         {isLogin ? (
           <Stack.Navigator headerMode="false">
+            <Stack.Screen name="Ekle" component={EkleView} />
             <Stack.Screen name="Kelimeler" component={KelimelerView} />
             {/* <Stack.Screen name="Liste" component={ListeView} /> */}
           </Stack.Navigator>

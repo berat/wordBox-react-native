@@ -8,7 +8,7 @@ import {Random, Add, Detail, Edit, Okey, Voice} from '../components/icons';
 
 import BoxBg from '../components/boxBg';
 
-function KelimelerView() {
+function KelimelerView({navigation}) {
   const [isWord, setWord] = React.useState('false');
 
   return (
@@ -34,7 +34,7 @@ function KelimelerView() {
           </Text>
           <Detail />
         </Button>
-        <BoxBg bg="0.light">
+        <BoxBg bg="0.light" onPress={() => navigation.navigate('Ekle')}>
           <Add />
         </BoxBg>
       </Box>
@@ -67,17 +67,17 @@ function KelimelerView() {
         </Box>
         <Box
           width="90%"
-          pt={20}
+          py={20}
           flexDirection="row"
           alignItems="center"
           justifyContent="space-between">
-          <BoxBg bg="0.light">
+          <BoxBg minWidth="10%" bg="0.light">
             <Edit />
           </BoxBg>
-          <BoxBg minWidth={200} bg="0.light">
+          <BoxBg minWidth="55%" bg="0.light">
             <Okey stroke="black" />
           </BoxBg>
-          <BoxBg bg="0.light">
+          <BoxBg minWidth="10%" bg="0.light">
             <Voice />
           </BoxBg>
         </Box>

@@ -3,11 +3,16 @@ import Svg, {G, Path, Defs, ClipPath} from 'react-native-svg';
 
 function SvgRandom(props) {
   return (
-    <Svg width="24" height="24" viewBox="0 0 17 17" fill="none" className="">
+    <Svg
+      width="24"
+      height="24"
+      viewBox="0 0 17 17"
+      fill="none"
+      className=""
+      {...props}>
       <G
         clipPath="url(#random_svg__clip0)"
         stroke="#222831"
-        {...props}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round">
