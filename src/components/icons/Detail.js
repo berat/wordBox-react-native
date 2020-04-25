@@ -3,16 +3,11 @@ import Svg, {Path} from 'react-native-svg';
 
 function SvgDetail(props) {
   return (
-    <Svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      className=""
-      {...props}>
+    <Svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="">
       <Path
         d="M6 9l6 6 6-6"
         stroke="#222831"
+        {...props}
         strokeWidth={2}
         strokeLinecap="round"
         strokeLinejoin="round"
