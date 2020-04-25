@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, AsyncStorage} from 'react-native';
 
 import Box from '../components/style/Box';
 import Text from '../components/style/Text';
@@ -10,6 +10,31 @@ import BoxBg from '../components/boxBg';
 
 function KelimelerView({navigation}) {
   const [isWord, setWord] = React.useState('false');
+  const [uid, setUID] = React.useState();
+
+  const loginMi = async () => {
+    try {
+      AsyncStorage.getItem('isLogin').then((e) => {
+        e !== null ? setUID(e) : navigation.navigate('Login');
+      });
+    } catch (pass) {
+      console.log(pass);
+    }
+  };
+
+  const cikisYap = async () => {
+    try {
+      await AsyncStorage.removeItem('isLogin').then((e) =>
+        navigation.navigate('Login'),
+      );
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  React.useState(() => {
+    loginMi();
+  }, []);
 
   return (
     <Box
@@ -25,7 +50,7 @@ function KelimelerView({navigation}) {
         alignItems="center"
         flexDirection="row"
         justifyContent="space-between">
-        <BoxBg bg="0.light">
+        <BoxBg bg="0.light" onPress={() => cikisYap()}>
           <Random />
         </BoxBg>
         <Button>

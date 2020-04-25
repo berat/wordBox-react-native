@@ -1,6 +1,8 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, AsyncStorage} from 'react-native';
 
+import firebase from 'firebase';
+import {veritabani} from '../utils/api';
 import Box from '../components/style/Box';
 import Input from '../components/style/Input';
 import Button from '../components/style/Button';
@@ -8,6 +10,53 @@ import Text from '../components/style/Text';
 import {Back} from '../components/icons/';
 
 function EkleView({navigation}) {
+  const [yabanci, setYabanci] = React.useState();
+  const [anlami, setAnlami] = React.useState();
+  const [uid, setUID] = React.useState();
+  const [toplamKel, setToplamKel] = React.useState(0);
+
+  const kaydet = () => {
+    firebase
+      .database()
+      .ref('kelimeler')
+      .push({
+        userUID: JSON.parse(uid).userid,
+        yabanci: yabanci,
+        anlami: anlami,
+      })
+      .then((data) => {
+        setYabanci('');
+        setAnlami('');
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const getToplamKel = () => {
+    firebase
+      .database()
+      .ref('kelimeler')
+      .on('value', (snapshot) => {
+        let data = snapshot.val();
+        setToplamKel(Object.keys(data).length);
+        console.log(snapshot.val());
+      });
+  };
+
+  const loginMi = async () => {
+    try {
+      AsyncStorage.getItem('isLogin').then((e) => {
+        e !== null ? setUID(e) : navigation.navigate('Login');
+      });
+    } catch (pass) {
+      console.log(pass);
+    }
+  };
+
+  React.useState(() => {
+    loginMi();
+    getToplamKel();
+  }, []);
+
   return (
     <Box bg="0.light" as={SafeAreaView} flex={1} justifyContent="space-between">
       <Button
@@ -37,6 +86,8 @@ function EkleView({navigation}) {
             placeholder="Blanket"
             borderRadius="normal"
             mt={10}
+            value={yabanci || ''}
+            onChangeText={(e) => setYabanci(e)}
           />
         </Box>
         <Box width="90%" mt={50}>
@@ -52,6 +103,8 @@ function EkleView({navigation}) {
             placeholder="Battaniye"
             borderRadius="normal"
             mt={10}
+            value={anlami || ''}
+            onChangeText={(e) => setAnlami(e)}
           />
         </Box>
         <Button
@@ -59,7 +112,8 @@ function EkleView({navigation}) {
           mt={50}
           bg="0.dark"
           height={70}
-          borderRadius="normal">
+          borderRadius="normal"
+          onPress={() => kaydet()}>
           <Text color="0.light" fontWeight="bold" fontSize={18}>
             KAYDET
           </Text>
@@ -68,7 +122,7 @@ function EkleView({navigation}) {
       <Box flex={1} flexDirection="row" justifyContent="center">
         <Text fontSize={16}>Toplam kelime sayısı: </Text>
         <Text fontSize={16} fontWeight="bold">
-          257
+          {toplamKel}
         </Text>
       </Box>
     </Box>

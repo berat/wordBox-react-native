@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from 'react';
 import {SafeAreaView, AsyncStorage} from 'react-native';
 
@@ -14,11 +15,34 @@ import {
   HesapKontrolText,
 } from '../components/hesapKontrol';
 
-export const isLogin = () => AsyncStorage.setItem('isLogin', 'true');
-
+export const isLogin = async (userid) => {
+  try {
+    console.log(userid);
+    await AsyncStorage.setItem(
+      'isLogin',
+      JSON.stringify({is: true, userid: userid}),
+    );
+  } catch (err) {
+    console.log(err);
+  }
+};
 function LoginView({navigation}) {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
+
+  const loginMi = async () => {
+    try {
+      AsyncStorage.getItem('isLogin').then((e) => {
+        e != null ? navigation.navigate('Kelimeler') : null;
+      });
+    } catch (pass) {
+      console.log(pass);
+    }
+  };
+
+  React.useEffect(() => {
+    loginMi();
+  }, []);
 
   const signIn = () => {
     firebase
@@ -26,8 +50,8 @@ function LoginView({navigation}) {
       .signInWithEmailAndPassword(email, password)
       .then(
         (data) => {
+          isLogin(data.user.uid);
           navigation.navigate('Kelimeler');
-          isLogin();
         },
         (error) => {
           console.log('signError error: ', error);
@@ -113,4 +137,5 @@ function LoginView({navigation}) {
     </Box>
   );
 }
+
 export default LoginView;

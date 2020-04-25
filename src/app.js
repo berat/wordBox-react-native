@@ -4,8 +4,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ThemeProvider} from 'styled-components';
 
-import {isLogin} from './views/login';
-
 import theme from './utils/theme';
 import KelimelerView from './views/kelimeler';
 import EkleView from './views/ekle';
@@ -18,20 +16,13 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
-        {isLogin ? (
-          <Stack.Navigator headerMode="false">
-            <Stack.Screen name="Ekle" component={EkleView} />
-            <Stack.Screen name="Kelimeler" component={KelimelerView} />
-            {/* <Stack.Screen name="Liste" component={ListeView} /> */}
-          </Stack.Navigator>
-        ) : (
-          <Stack.Navigator headerMode="false">
-            <Stack.Screen name="Login" component={LoginView} />
-            <Stack.Screen name="Register" component={RegisterView} />
-            <Stack.Screen name="Kelimeler" component={KelimelerView} />
-            {/* <Stack.Screen name="Liste" component={ListeView} /> */}
-          </Stack.Navigator>
-        )}
+        <Stack.Navigator headerMode="false">
+          <Stack.Screen name="Login" component={LoginView} />
+          <Stack.Screen name="Register" component={RegisterView} />
+          <Stack.Screen name="Kelimeler" component={KelimelerView} />
+          <Stack.Screen name="Ekle" component={EkleView} />
+          {/* <Stack.Screen name="Liste" component={ListeView} /> */}
+        </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
   );

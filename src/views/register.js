@@ -1,5 +1,5 @@
 import React from 'react';
-import {SafeAreaView} from 'react-native';
+import {SafeAreaView, AsyncStorage} from 'react-native';
 
 import Box from '../components/style/Box';
 import Text from '../components/style/Text';
@@ -18,6 +18,20 @@ function RegisterView({navigation}) {
   const [email, setEmail] = React.useState();
   const [password, setPassword] = React.useState();
   const [cpassword, setCPassword] = React.useState();
+
+  const loginMi = async () => {
+    try {
+      AsyncStorage.getItem('isLogin').then((e) => {
+        e != null ? navigation.navigate('Kelimeler') : null;
+      });
+    } catch (pass) {
+      console.log(pass);
+    }
+  };
+
+  React.useEffect(() => {
+    loginMi();
+  }, []);
 
   const kayitOl = () => {
     cpassword === password
