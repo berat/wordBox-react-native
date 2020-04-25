@@ -88,6 +88,7 @@ function LoginView({navigation}) {
               shadowRadius: 4.27,
               elevation: 2,
             }}
+            textContentType="emailAddress"
             onChangeText={(text) => setEmail(text)}
           />
           <Input

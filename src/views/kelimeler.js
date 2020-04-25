@@ -14,11 +14,22 @@ function KelimelerView({navigation}) {
   const [isWord, setWord] = React.useState('false');
   const [uid, setUID] = React.useState();
   const [renkKod, setRenkKod] = React.useState(Math.floor(Math.random() * 9));
+  const [kaydir, setKaydir] = React.useState('');
+  const [sonSayfa, setSonSayfa] = React.useState(false);
   const [data, setData] = React.useState({
     load: false,
     dataKeys: null,
     data: null,
   });
+
+  const basaDon = () => {
+    kaydir.scrollResponderScrollTo({
+      x: 0,
+      y: 0,
+      animated: true,
+    });
+    setWord('false');
+  };
 
   const loginMi = async () => {
     try {
@@ -67,12 +78,21 @@ function KelimelerView({navigation}) {
           scrollEnabled
           scrollToOverflowEnabled
           pagingEnabled
-          showsHorizontalScrollIndicator={false}
-          onScroll={anlikScroll}>
+          ref={(ref) => setKaydir(ref)}
+          onScrollEndDrag={() => anlikScroll()}
+          onScroll={(e) =>
+            e.nativeEvent.contentOffset.x >
+            Math.round(Dimensions.get('window').width) *
+              (data.dataKeys.length - 1)
+              ? basaDon()
+              : null
+          }
+          showsHorizontalScrollIndicator={false}>
           {data.load === true
             ? data.dataKeys.map((item, index) => (
                 <Box
                   flex={1}
+                  key={index}
                   alignItems="center"
                   width={Math.round(Dimensions.get('window').width)}>
                   <Box
