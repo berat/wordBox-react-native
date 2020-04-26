@@ -50,7 +50,35 @@ function KelimelerView({navigation}) {
       .ref('kelimeler')
       .on('value', (snapshot) => {
         let data1 = snapshot.val();
-        setData({load: true, dataKeys: Object.keys(data1), data: data1});
+        const colors = {
+          grey: '#BDC8D1',
+          blue: '#0500FF',
+          pink: '#FF00C7',
+          orange: '#FF7A00',
+        };
+
+        const randomIndex = (arr) => (Math.random() * arr.length) >> 0;
+
+        const getRandom = (keys = [], times = 0, colors = []) => {
+          if (!keys.length || times <= 0) {
+            return colors;
+          }
+
+          const randIndex = randomIndex(keys);
+
+          colors.push(keys[randIndex]);
+          keys.splice(randIndex, 1);
+          times--;
+
+          return getRandom(keys, times, colors);
+        };
+
+        setData({
+          load: true,
+          dataKeys: getRandom(Object.keys(data1), Object.keys(data1).length),
+          data: data1,
+        });
+        basaDon();
       });
   };
 
@@ -72,7 +100,6 @@ function KelimelerView({navigation}) {
   const anlikScroll = (e) => {
     let screenSize = e.layoutMeasurement.width;
     let x = e.targetContentOffset?.x;
-    console.log('x', x);
     if (x !== sayfaGecis) {
       setRenkKod(Math.floor(Math.random() * 9));
       setWord('false');
@@ -93,7 +120,6 @@ function KelimelerView({navigation}) {
           ref={(ref) => setKaydir(ref)}
           onScrollEndDrag={(e) => {
             anlikScroll(e.nativeEvent);
-            console.log(e.nativeEvent);
           }}
           onMomentumScrollEnd={(e) =>
             setSayfaGecis(e.nativeEvent.contentOffset.x)
@@ -115,7 +141,7 @@ function KelimelerView({navigation}) {
                     alignItems="center"
                     flexDirection="row"
                     justifyContent="space-between">
-                    <BoxBg bg={`${renkKod}.light`} onPress={() => cikisYap()}>
+                    <BoxBg bg={`${renkKod}.light`} onPress={() => getData()}>
                       <Random stroke={`${theme.colors[renkKod].dark}`} />
                     </BoxBg>
                     <Button>
