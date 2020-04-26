@@ -16,6 +16,8 @@ function KelimelerView({navigation}) {
   const [renkKod, setRenkKod] = React.useState(Math.floor(Math.random() * 9));
   const [kaydir, setKaydir] = React.useState('');
   const [sonSayfa, setSonSayfa] = React.useState(false);
+  const [basButon, setBasButon] = React.useState(false);
+  const [sayfaGecis, setSayfaGecis] = React.useState('');
   const [data, setData] = React.useState({
     load: false,
     dataKeys: null,
@@ -29,6 +31,7 @@ function KelimelerView({navigation}) {
       animated: true,
     });
     setWord('false');
+    setBasButon(false);
   };
 
   const loginMi = async () => {
@@ -67,26 +70,37 @@ function KelimelerView({navigation}) {
   }, []);
 
   const anlikScroll = (e) => {
-    setRenkKod(Math.floor(Math.random() * 9));
-    setWord('false');
+    let screenSize = e.layoutMeasurement.width;
+    let x = e.targetContentOffset?.x;
+    console.log('x', x);
+    if (x !== sayfaGecis) {
+      setRenkKod(Math.floor(Math.random() * 9));
+      setWord('false');
+    }
+    if ((data.dataKeys.length - 1) * screenSize === x) {
+      setBasButon(true);
+    } else {
+      setBasButon(false);
+    }
   };
   return (
     <Box as={SafeAreaView} flex={1} bg={`${renkKod}.bg`}>
       <Box flex={1} justifyContent="space-between">
         <ScrollView
           horizontal
-          scrollEnabled
           scrollToOverflowEnabled
           pagingEnabled
           ref={(ref) => setKaydir(ref)}
-          onScrollEndDrag={() => anlikScroll()}
-          onScroll={(e) =>
-            e.nativeEvent.contentOffset.x >
-            Math.round(Dimensions.get('window').width) *
-              (data.dataKeys.length - 1)
-              ? basaDon()
-              : null
+          onScrollEndDrag={(e) => {
+            anlikScroll(e.nativeEvent);
+            console.log(e.nativeEvent);
+          }}
+          onMomentumScrollEnd={(e) =>
+            setSayfaGecis(e.nativeEvent.contentOffset.x)
           }
+          onScroll={(e) => {
+            setWord('false');
+          }}
           showsHorizontalScrollIndicator={false}>
           {data.load === true
             ? data.dataKeys.map((item, index) => (
@@ -144,13 +158,26 @@ function KelimelerView({navigation}) {
                     </Button>
                   )}
                   <Box width="90%" alignItems="center" flexDirection="column">
-                    <Box>
+                    <Box alignItems="center">
                       <Text
                         fontWeight="bold"
                         fontSize={16}
                         color={`${renkKod}.light`}>
                         {index + 1} / {data.dataKeys.length}
                       </Text>
+                      {basButon && (
+                        <Button
+                          minWidth="55%"
+                          height={50}
+                          borderRadius="normal"
+                          bg={`${renkKod}.light`}
+                          mt={20}
+                          onPress={() => basaDon()}>
+                          <Text fontSize={16} color={`${renkKod}.dark`}>
+                            Başa Dön
+                          </Text>
+                        </Button>
+                      )}
                     </Box>
                     <Box
                       width="90%"
