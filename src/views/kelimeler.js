@@ -1,5 +1,12 @@
 import React from 'react';
-import {SafeAreaView, AsyncStorage, ScrollView, Dimensions} from 'react-native';
+import {
+  SafeAreaView,
+  AsyncStorage,
+  ScrollView,
+  Dimensions,
+  BackHandler,
+  Alert,
+} from 'react-native';
 
 import firebase from 'firebase';
 import {veritabani} from '../utils/api';
@@ -18,6 +25,7 @@ function KelimelerView({navigation}) {
   const [sonSayfa, setSonSayfa] = React.useState(false);
   const [basButon, setBasButon] = React.useState(false);
   const [sayfaGecis, setSayfaGecis] = React.useState('');
+  const [dilStatus, setDilStatus] = React.useState(true);
   const [data, setData] = React.useState({
     load: false,
     dataKeys: null,
@@ -50,29 +58,18 @@ function KelimelerView({navigation}) {
       .ref('kelimeler')
       .on('value', (snapshot) => {
         let data1 = snapshot.val();
-        const colors = {
-          grey: '#BDC8D1',
-          blue: '#0500FF',
-          pink: '#FF00C7',
-          orange: '#FF7A00',
-        };
 
         const randomIndex = (arr) => (Math.random() * arr.length) >> 0;
-
         const getRandom = (keys = [], times = 0, colors = []) => {
           if (!keys.length || times <= 0) {
             return colors;
           }
-
           const randIndex = randomIndex(keys);
-
           colors.push(keys[randIndex]);
           keys.splice(randIndex, 1);
           times--;
-
           return getRandom(keys, times, colors);
         };
-
         setData({
           load: true,
           dataKeys: getRandom(Object.keys(data1), Object.keys(data1).length),
@@ -95,6 +92,24 @@ function KelimelerView({navigation}) {
   React.useState(() => {
     loginMi();
     getData();
+    const backAction = () => {
+      Alert.alert('Bekle!', 'Çıkmak istediğine emin misin?', [
+        {
+          text: 'İptal',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {text: 'Evet', onPress: () => BackHandler.exitApp()},
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   const anlikScroll = (e) => {
@@ -144,9 +159,9 @@ function KelimelerView({navigation}) {
                     <BoxBg bg={`${renkKod}.light`} onPress={() => getData()}>
                       <Random stroke={`${theme.colors[renkKod].dark}`} />
                     </BoxBg>
-                    <Button>
+                    <Button onPress={() => setDilStatus(!dilStatus)}>
                       <Text color={`${renkKod}.light`} fontSize={18} pr={4}>
-                        Yabancı - Anadil
+                        {dilStatus ? 'Yabancı - Anadil' : 'Anadil - Yabanci'}
                       </Text>
                       <Detail stroke={`${theme.colors[renkKod].light}`} />
                     </Button>
@@ -211,7 +226,16 @@ function KelimelerView({navigation}) {
                       flexDirection="row"
                       alignItems="center"
                       justifyContent="space-between">
-                      <BoxBg minWidth="10%" bg={`${renkKod}.light`}>
+                      <BoxBg
+                        minWidth="10%"
+                        bg={`${renkKod}.light`}
+                        onPress={() =>
+                          navigation.navigate('Ekle', {
+                            yabanciKelime: data.data[item].yabanci,
+                            kelimeAnlami: data.data[item].anlami,
+                            kelimeID: item,
+                          })
+                        }>
                         <Edit stroke={`${theme.colors[renkKod].dark}`} />
                       </BoxBg>
                       <BoxBg minWidth="55%" bg={`${renkKod}.light`}>

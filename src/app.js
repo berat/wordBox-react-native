@@ -1,5 +1,4 @@
 import React from 'react';
-import 'react-native-gesture-handler';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import {ThemeProvider} from 'styled-components';
@@ -15,7 +14,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer>
+      <NavigationContainer >
         <Stack.Navigator headerMode="false">
           <Stack.Screen name="Login" component={LoginView} />
           <Stack.Screen name="Register" component={RegisterView} />

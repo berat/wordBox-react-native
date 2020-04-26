@@ -161,7 +161,6 @@
 				DB4D66BB58C80D92D4E414FE /* Pods-kelimeBox-tvOSTests.debug.xcconfig */,
 				CC1F81084AA4F884D522B470 /* Pods-kelimeBox-tvOSTests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};

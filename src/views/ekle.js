@@ -9,11 +9,20 @@ import Button from '../components/style/Button';
 import Text from '../components/style/Text';
 import {Back} from '../components/icons/';
 
-function EkleView({navigation}) {
+function EkleView({navigation, route}) {
   const [yabanci, setYabanci] = React.useState();
   const [anlami, setAnlami] = React.useState();
   const [uid, setUID] = React.useState();
+  const [kelimeID, setKelimeID] = React.useState();
   const [toplamKel, setToplamKel] = React.useState(0);
+
+  const paramKontrol = () => {
+    if (route.params !== undefined) {
+      setKelimeID(route.params.kelimeID);
+      setYabanci(route.params.yabanciKelime);
+      setAnlami(route.params.kelimeAnlami);
+    }
+  };
 
   const kaydet = () => {
     firebase
@@ -31,6 +40,22 @@ function EkleView({navigation}) {
       .catch((err) => console.log(err));
   };
 
+  const guncelle = () => {
+    console.log(kelimeID);
+    firebase
+      .database()
+      .ref(`kelimeler/${kelimeID}`)
+      .update({
+        yabanci: yabanci,
+        anlami: anlami,
+      })
+      .then((data) => {
+        setYabanci('');
+        setAnlami('');
+      })
+      .catch((err) => console.log(err));
+  };
+
   const getToplamKel = () => {
     firebase
       .database()
@@ -38,7 +63,6 @@ function EkleView({navigation}) {
       .on('value', (snapshot) => {
         let data = snapshot.val();
         setToplamKel(Object.keys(data).length);
-        console.log(snapshot.val());
       });
   };
 
@@ -54,8 +78,9 @@ function EkleView({navigation}) {
 
   React.useState(() => {
     loginMi();
+    paramKontrol();
     getToplamKel();
-  }, []);
+  }, [route.params.kelimeID]);
 
   return (
     <Box bg="0.light" as={SafeAreaView} flex={1} justifyContent="space-between">
@@ -86,7 +111,7 @@ function EkleView({navigation}) {
             placeholder="Blanket"
             borderRadius="normal"
             mt={10}
-            value={yabanci || ''}
+            defaultValue={yabanci || ''}
             onChangeText={(e) => setYabanci(e)}
           />
         </Box>
@@ -103,7 +128,7 @@ function EkleView({navigation}) {
             placeholder="Battaniye"
             borderRadius="normal"
             mt={10}
-            value={anlami || ''}
+            defaultValue={anlami || ''}
             onChangeText={(e) => setAnlami(e)}
           />
         </Box>
@@ -113,7 +138,7 @@ function EkleView({navigation}) {
           bg="0.dark"
           height={70}
           borderRadius="normal"
-          onPress={() => kaydet()}>
+          onPress={() => (kelimeID ? guncelle() : kaydet())}>
           <Text color="0.light" fontWeight="bold" fontSize={18}>
             KAYDET
           </Text>
