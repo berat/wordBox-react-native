@@ -6,7 +6,9 @@ import {
   Dimensions,
   BackHandler,
   Alert,
+  StatusBar,
 } from 'react-native';
+import {useFocusEffect} from '@react-navigation/native';
 
 import firebase from 'firebase';
 import {veritabani} from '../utils/api';
@@ -22,7 +24,6 @@ function KelimelerView({navigation}) {
   const [uid, setUID] = React.useState();
   const [renkKod, setRenkKod] = React.useState(Math.floor(Math.random() * 9));
   const [kaydir, setKaydir] = React.useState('');
-  const [sonSayfa, setSonSayfa] = React.useState(false);
   const [basButon, setBasButon] = React.useState(false);
   const [sayfaGecis, setSayfaGecis] = React.useState('');
   const [dilStatus, setDilStatus] = React.useState(true);
@@ -32,8 +33,8 @@ function KelimelerView({navigation}) {
     data: null,
   });
 
-  const basaDon = () => {
-    kaydir.scrollResponderScrollTo({
+  const basaDon = async () => {
+    await kaydir.scrollResponderScrollTo({
       x: 0,
       y: 0,
       animated: true,
@@ -137,6 +138,16 @@ function KelimelerView({navigation}) {
       setBasButon(false);
     }
   };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      StatusBar.setBarStyle(
+        theme.colors[renkKod].light === '#F1F1F1'
+          ? 'light-content'
+          : 'dark-content',
+      );
+    }, [renkKod]),
+  );
   return (
     <Box as={SafeAreaView} flex={1} bg={`${renkKod}.bg`}>
       <Box flex={1} justifyContent="space-between">
@@ -294,7 +305,9 @@ function KelimelerView({navigation}) {
             alignItems="center"
             justifyContent="center"
             flexDirection="column">
-            <Text fontSize={24}>Yükleniyor...</Text>
+            <Text fontSize={24} color={`${renkKod}.light`}>
+              Yükleniyor...
+            </Text>
           </Box>
         )}
       </Box>
