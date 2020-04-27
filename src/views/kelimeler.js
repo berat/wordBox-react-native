@@ -27,6 +27,7 @@ function KelimelerView({navigation}) {
   const [basButon, setBasButon] = React.useState(false);
   const [sayfaGecis, setSayfaGecis] = React.useState('');
   const [dilStatus, setDilStatus] = React.useState(true);
+  const [count, setCount] = React.useState();
   const [data, setData] = React.useState({
     load: false,
     dataKeys: null,
@@ -65,6 +66,7 @@ function KelimelerView({navigation}) {
                 times--;
                 return getRandom(keys, times, colors);
               };
+              setCount(Object.keys(data1).length);
               setData({
                 load: true,
                 dataKeys: getRandom(
@@ -101,6 +103,7 @@ function KelimelerView({navigation}) {
       .update({
         ezber: true,
       });
+    setCount(count - 1);
   };
 
   React.useState(() => {
@@ -231,7 +234,7 @@ function KelimelerView({navigation}) {
                           fontWeight="bold"
                           fontSize={16}
                           color={`${renkKod}.light`}>
-                          {index + 1} / {data.dataKeys.length}
+                          {index + 1} / {count}
                         </Text>
                         {basButon && (
                           <Button
@@ -268,7 +271,9 @@ function KelimelerView({navigation}) {
                         <BoxBg
                           minWidth="55%"
                           bg={`${renkKod}.light`}
-                          onPress={() => ezberle(item)}>
+                          onPress={() => {
+                            ezberle(item);
+                          }}>
                           <Okey stroke={`${theme.colors[renkKod].dark}`} />
                         </BoxBg>
                         <BoxBg minWidth="10%" bg={`${renkKod}.light`}>
