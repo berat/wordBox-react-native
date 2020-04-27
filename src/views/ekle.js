@@ -27,9 +27,9 @@ function EkleView({navigation, route}) {
   const kaydet = () => {
     firebase
       .database()
-      .ref('kelimeler')
+      .ref(`kelimeler/${JSON.parse(uid).userid}`)
       .push({
-        userUID: JSON.parse(uid).userid,
+        ezber: false,
         yabanci: yabanci,
         anlami: anlami,
       })
@@ -41,10 +41,9 @@ function EkleView({navigation, route}) {
   };
 
   const guncelle = () => {
-    console.log(kelimeID);
     firebase
       .database()
-      .ref(`kelimeler/${kelimeID}`)
+      .ref(`kelimeler/${JSON.parse(uid).userid}/${kelimeID}`)
       .update({
         yabanci: yabanci,
         anlami: anlami,
@@ -56,31 +55,33 @@ function EkleView({navigation, route}) {
       .catch((err) => console.log(err));
   };
 
-  const getToplamKel = () => {
-    firebase
-      .database()
-      .ref('kelimeler')
-      .on('value', (snapshot) => {
-        let data = snapshot.val();
-        setToplamKel(Object.keys(data).length);
-      });
-  };
-
   const loginMi = async () => {
     try {
-      AsyncStorage.getItem('isLogin').then((e) => {
-        e !== null ? setUID(e) : navigation.navigate('Login');
+      await AsyncStorage.getItem('isLogin').then((e) => {
+        if (e) {
+          setUID(e);
+          firebase
+            .database()
+            .ref(`kelimeler/${JSON.parse(e).userid}`)
+            .on('value', (snapshot) => {
+              let data = snapshot.val();
+              setToplamKel(Object.keys(data).length);
+            });
+        } else {
+          navigation.navigate('Login');
+        }
       });
     } catch (pass) {
       console.log(pass);
     }
   };
+  const getToplamKel = async () => {};
 
   React.useState(() => {
     loginMi();
     paramKontrol();
     getToplamKel();
-  }, [route.params.kelimeID]);
+  }, [setUID]);
 
   return (
     <Box bg="0.light" as={SafeAreaView} flex={1} justifyContent="space-between">

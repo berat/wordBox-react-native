@@ -14,7 +14,7 @@ const Stack = createStackNavigator();
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <NavigationContainer >
+      <NavigationContainer>
         <Stack.Navigator headerMode="false">
           <Stack.Screen name="Login" component={LoginView} />
           <Stack.Screen name="Register" component={RegisterView} />
