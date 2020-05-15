@@ -276,7 +276,10 @@ function KelimelerView({navigation}) {
                           }}>
                           <Okey stroke={`${theme.colors[renkKod].dark}`} />
                         </BoxBg>
-                        <BoxBg minWidth="10%" bg={`${renkKod}.light`}>
+                        <BoxBg
+                          minWidth="10%"
+                          bg={`${renkKod}.light`}
+                          onPress={() => console.log('sesli')}>
                           <Voice stroke={`${theme.colors[renkKod].dark}`} />
                         </BoxBg>
                       </Box>
