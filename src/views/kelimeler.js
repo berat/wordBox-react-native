@@ -35,8 +35,7 @@ function KelimelerView({navigation}) {
   });
 
   const renkDegistir = (e) => {
-    console.log(sayfaGecis);
-    if (e.targetContentOffset?.x !== sayfaGecis) {
+    if (e.contentOffset?.x !== sayfaGecis) {
       setRenkKod(Math.floor(Math.random() * 9));
     }
   };
@@ -168,10 +167,11 @@ function KelimelerView({navigation}) {
               pagingEnabled
               ref={(ref) => setKaydir(ref)}
               onMomentumScrollEnd={(e) => {
+                renkDegistir(e.nativeEvent);
                 setSayfaGecis(e.nativeEvent.contentOffset.x);
               }}
-              onScrollBeginDrag={(e) => trueYap()}
-              onScrollEndDrag={(e) => renkDegistir(e.nativeEvent)}
+              onScrollBeginDrag={(e) => (dilStatus ? trueYap() : falseYap())}
+              // onScrollEndDrag={(e) => renkDegistir(e.nativeEvent)}
               showsHorizontalScrollIndicator={false}>
               {data.dataKeys
                 .filter((item) => data.data[item].ezber === false)
@@ -181,6 +181,7 @@ function KelimelerView({navigation}) {
                     key={index}
                     alignItems="center"
                     width={Math.round(Dimensions.get('window').width)}>
+                    {console.log(dilStatus)}
                     <Box
                       pt={10}
                       width="90%"
@@ -190,7 +191,11 @@ function KelimelerView({navigation}) {
                       <BoxBg bg={`${renkKod}.light`} onPress={() => loginMi()}>
                         <Random stroke={`${theme.colors[renkKod].dark}`} />
                       </BoxBg>
-                      <Button onPress={() => setDilStatus(!dilStatus)}>
+                      <Button
+                        onPress={() => {
+                          setDilStatus(!dilStatus);
+                          dilStatus ? falseYap() : trueYap();
+                        }}>
                         <Text color={`${renkKod}.light`} fontSize={18} pr={4}>
                           {dilStatus ? 'Yabancı - Anadil' : 'Anadil - Yabanci'}
                         </Text>
@@ -211,7 +216,11 @@ function KelimelerView({navigation}) {
                         fontSize={36}
                         textAlign="center"
                         color={`${renkKod}.light`}>
-                        {isWord
+                        {dilStatus
+                          ? isWord
+                            ? data.data[item].yabanci
+                            : data.data[item].anlami
+                          : isWord
                           ? data.data[item].yabanci
                           : data.data[item].anlami}
                       </Text>
