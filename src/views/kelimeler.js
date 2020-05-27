@@ -35,8 +35,7 @@ function KelimelerView({navigation}) {
   });
 
   const renkDegistir = (e) => {
-    console.log(e.targetContentOffset?.x, sayfaGecis);
-    console.log(e);
+    console.log(sayfaGecis);
     if (e.targetContentOffset?.x !== sayfaGecis) {
       setRenkKod(Math.floor(Math.random() * 9));
     }
@@ -171,6 +170,7 @@ function KelimelerView({navigation}) {
               onMomentumScrollEnd={(e) => {
                 setSayfaGecis(e.nativeEvent.contentOffset.x);
               }}
+              onScrollBeginDrag={(e) => trueYap()}
               onScrollEndDrag={(e) => renkDegistir(e.nativeEvent)}
               showsHorizontalScrollIndicator={false}>
               {data.dataKeys
