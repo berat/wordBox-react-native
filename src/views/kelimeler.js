@@ -20,7 +20,7 @@ import BoxBg from '../components/boxBg';
 import theme from '../utils/theme';
 
 function KelimelerView({navigation}) {
-  const [isWord, setWord] = React.useState('false');
+  const [isWord, setWord] = React.useState(true);
   const [uid, setUID] = React.useState();
   const [renkKod, setRenkKod] = React.useState(Math.floor(Math.random() * 9));
   const [kaydir, setKaydir] = React.useState('');
@@ -34,13 +34,23 @@ function KelimelerView({navigation}) {
     data: null,
   });
 
+  const renkDegistir = (e) => {
+    console.log(e.targetContentOffset?.x, sayfaGecis);
+    console.log(e);
+    if (e.targetContentOffset?.x !== sayfaGecis) {
+      setRenkKod(Math.floor(Math.random() * 9));
+    }
+  };
+  const tersle = () => setWord(!isWord);
+  const falseYap = () => setWord(false);
+  const trueYap = () => setWord(true);
+
   const basaDon = async () => {
     await kaydir.scrollResponderScrollTo({
       x: 0,
       y: 0,
       animated: true,
     });
-    setWord('false');
     setBasButon(false);
   };
 
@@ -131,10 +141,6 @@ function KelimelerView({navigation}) {
   const anlikScroll = (e) => {
     let screenSize = e.layoutMeasurement.width;
     let x = e.targetContentOffset?.x;
-    if (x !== sayfaGecis) {
-      setRenkKod(Math.floor(Math.random() * 9));
-      setWord('false');
-    }
     if ((data.dataKeys.length - 1) * screenSize === x) {
       setBasButon(true);
     } else {
@@ -162,15 +168,10 @@ function KelimelerView({navigation}) {
               scrollToOverflowEnabled
               pagingEnabled
               ref={(ref) => setKaydir(ref)}
-              onScrollEndDrag={(e) => {
-                anlikScroll(e.nativeEvent);
+              onMomentumScrollEnd={(e) => {
+                setSayfaGecis(e.nativeEvent.contentOffset.x);
               }}
-              onMomentumScrollEnd={(e) =>
-                setSayfaGecis(e.nativeEvent.contentOffset.x)
-              }
-              onScroll={(e) => {
-                setWord('false');
-              }}
+              onScrollEndDrag={(e) => renkDegistir(e.nativeEvent)}
               showsHorizontalScrollIndicator={false}>
               {data.dataKeys
                 .filter((item) => data.data[item].ezber === false)
@@ -201,40 +202,32 @@ function KelimelerView({navigation}) {
                         <Add stroke={`${theme.colors[renkKod].dark}`} />
                       </BoxBg>
                     </Box>
-                    {isWord ? (
-                      <Button
-                        width="90%"
-                        flex={1}
-                        justifyContent="center"
-                        onPress={() => setWord(!isWord)}>
-                        <Text
-                          fontSize={36}
-                          textAlign="center"
-                          color={`${renkKod}.light`}>
-                          {data.data[item].yabanci}
-                        </Text>
-                      </Button>
-                    ) : (
-                      <Button
-                        width="90%"
-                        flex={1}
-                        justifyContent="center"
-                        onPress={() => setWord(!isWord)}>
-                        <Text
-                          fontSize={36}
-                          textAlign="center"
-                          color={`${renkKod}.light`}>
-                          {data.data[item].anlami}
-                        </Text>
-                      </Button>
-                    )}
+                    <Button
+                      width="90%"
+                      flex={1}
+                      justifyContent="center"
+                      onPress={() => tersle()}>
+                      <Text
+                        fontSize={36}
+                        textAlign="center"
+                        color={`${renkKod}.light`}>
+                        {isWord
+                          ? data.data[item].yabanci
+                          : data.data[item].anlami}
+                      </Text>
+                    </Button>
                     <Box width="90%" alignItems="center" flexDirection="column">
                       <Box alignItems="center">
                         <Text
                           fontWeight="bold"
                           fontSize={16}
                           color={`${renkKod}.light`}>
-                          {index + 1} / {count}
+                          {index + 1} /{' '}
+                          {
+                            data.dataKeys.filter(
+                              (j) => data.data[j].ezber === false,
+                            ).length
+                          }
                         </Text>
                         {basButon && (
                           <Button
