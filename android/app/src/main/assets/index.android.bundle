@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Error</title>
+</head>
+<body>
+<pre>Error: Unable to resolve module `./index.android` from ``: <br><br>None of these files exist:<br> &nbsp;* index.android(.native|.android.js|.native.js|.js|.android.json|.native.json|.json|.android.ts|.native.ts|.ts|.android.tsx|.native.tsx|.tsx)<br> &nbsp;* index.android/index(.native|.android.js|.native.js|.js|.android.json|.native.json|.json|.android.ts|.native.ts|.ts|.android.tsx|.native.tsx|.tsx)<br> &nbsp; &nbsp;at ModuleResolver.resolveDependency (/Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/node-haste/DependencyGraph/ModuleResolution.js:163:15)<br> &nbsp; &nbsp;at ResolutionRequest.resolveDependency (/Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/node-haste/DependencyGraph/ResolutionRequest.js:52:18)<br> &nbsp; &nbsp;at DependencyGraph.resolveDependency (/Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/node-haste/DependencyGraph.js:287:16)<br> &nbsp; &nbsp;at /Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/lib/transformHelpers.js:267:42<br> &nbsp; &nbsp;at Server.&lt;anonymous&gt; (/Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/Server.js:841:41)<br> &nbsp; &nbsp;at Generator.next (&lt;anonymous&gt;)<br> &nbsp; &nbsp;at asyncGeneratorStep (/Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/Server.js:99:24)<br> &nbsp; &nbsp;at _next (/Users/bozkurt/Desktop/Folder/dev/kelimeBox/node_modules/metro/src/Server.js:119:9)</pre>
+</body>
+</html>

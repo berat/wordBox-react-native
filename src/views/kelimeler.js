@@ -136,10 +136,15 @@ function KelimelerView({navigation}) {
     return () => backHandler.remove();
   }, []);
 
-  const anlikScroll = (e) => {
+  const getDondurButton = (e) => {
     let screenSize = e.layoutMeasurement.width;
-    let x = e.targetContentOffset?.x;
-    if ((data.dataKeys.length - 1) * screenSize === x) {
+    let x = e.contentOffset.x;
+    if (
+      (data.dataKeys.filter((item) => data.data[item].ezber === false).length -
+        1) *
+        screenSize ===
+      x
+    ) {
       setBasButon(true);
     } else {
       setBasButon(false);
@@ -170,6 +175,9 @@ function KelimelerView({navigation}) {
                 renkDegistir(e.nativeEvent);
                 setSayfaGecis(e.nativeEvent.contentOffset.x);
               }}
+              onScroll={(e) => {
+                console.log(this);
+              }}
               onScrollBeginDrag={(e) => (dilStatus ? trueYap() : falseYap())}
               // onScrollEndDrag={(e) => renkDegistir(e.nativeEvent)}
               showsHorizontalScrollIndicator={false}>
@@ -181,7 +189,6 @@ function KelimelerView({navigation}) {
                     key={index}
                     alignItems="center"
                     width={Math.round(Dimensions.get('window').width)}>
-                    {console.log(dilStatus)}
                     <Box
                       pt={10}
                       width="90%"
