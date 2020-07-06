@@ -65,6 +65,10 @@ function EkleView({navigation, route}) {
             .ref(`kelimeler/${JSON.parse(e).userid}`)
             .on('value', (snapshot) => {
               let data = snapshot.val();
+              if (data == null) {
+                setToplamKel(0);
+                return;
+              }
               setToplamKel(Object.keys(data).length);
             });
         } else {
