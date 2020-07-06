@@ -62,7 +62,14 @@ function KelimelerView({navigation}) {
             .ref(`kelimeler/${JSON.parse(e).userid}`)
             .on('value', (snapshot) => {
               let data1 = snapshot.val();
-
+              if (data1 == null) {
+                setData({
+                  load: true,
+                  dataKeys: [],
+                  data: {},
+                });
+                return;
+              }
               const randomIndex = (arr) => (Math.random() * arr.length) >> 0;
               const getRandom = (keys = [], times = 0, colors = []) => {
                 if (!keys.length || times <= 0) {
@@ -75,6 +82,7 @@ function KelimelerView({navigation}) {
                 return getRandom(keys, times, colors);
               };
               setCount(Object.keys(data1).length);
+              console.log(data1);
               setData({
                 load: true,
                 dataKeys: getRandom(
@@ -285,10 +293,7 @@ function KelimelerView({navigation}) {
                           }}>
                           <Okey stroke={`${theme.colors[renkKod].dark}`} />
                         </BoxBg>
-                        <BoxBg
-                          minWidth="10%"
-                          bg={`${renkKod}.light`}
-                          onPress={() => console.log('sesli')}>
+                        <BoxBg minWidth="10%" bg={`${renkKod}.light`}>
                           <Voice stroke={`${theme.colors[renkKod].dark}`} />
                         </BoxBg>
                       </Box>

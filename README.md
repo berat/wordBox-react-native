@@ -26,6 +26,8 @@ Uzun zamandır ingilizce öğrenmek için kelime kartı hazırlıyordum. Bu işl
 
 <hr>
 
+## APK Dosyası
+https://github.com/berat/wordBox-react-native/raw/master/assets/wordBox.apk
 
 ### English
 ### About Project
@@ -45,6 +47,9 @@ I had been preparing a flashcard to learn English for a long time. To do these t
  - Feel free to contribute and improve.
 
 <hr>
+
+## APK File
+https://github.com/berat/wordBox-react-native/raw/master/assets/wordBox.apk
 
 ### Thank you for your watching
 To follow me [Github](https://github.com/berat) - [Twitter](https://twitter.com/beratbozkurt0) - [Linkedin](https://www.linkedin.com/in/beratbozkurt/)
